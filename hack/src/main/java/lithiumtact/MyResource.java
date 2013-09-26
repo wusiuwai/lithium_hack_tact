@@ -31,7 +31,7 @@ public class MyResource {
 	@Path("/confluence")
 	@Produces({MediaType.APPLICATION_JSON})
 	public String confluence(@QueryParam(value = "q") String query) throws IOException {
-		HttpGet httpGet = new HttpGet("http://confluence.dev.lithium.com/rest/prototype/1/search?query=" + query);
+		HttpGet httpGet = new HttpGet("http://confluence.dev.lithium.com/rest/prototype/1/search?max-results=10&query=" + query);
 		String responseBody = callRest(httpGet);
 		return responseBody;
 	}
