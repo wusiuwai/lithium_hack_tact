@@ -2,6 +2,7 @@
 package lithiumtact;
 
 import org.glassfish.grizzly.http.server.HttpServer;
+import org.junit.Ignore;
 
 import com.sun.jersey.core.header.MediaTypes;
 import com.sun.jersey.api.client.Client;
@@ -41,6 +42,7 @@ public class MainTest extends TestCase {
     /**
      * Test to see that the message "Got it!" is sent in the response.
      */
+    @Ignore
     public void _testMyResource() {
         String responseMsg = r.path("myresource").get(String.class);
         assertEquals("Got it!", responseMsg);
@@ -50,6 +52,7 @@ public class MainTest extends TestCase {
      * Test if a WADL document is available at the relative path
      * "application.wadl".
      */
+    @Ignore
     public void testApplicationWadl() {
         String serviceWadl = r.path("application.wadl").
                 accept(MediaTypes.WADL).get(String.class);
