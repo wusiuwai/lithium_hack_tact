@@ -2,6 +2,10 @@
 package lithiumtact;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -10,16 +14,22 @@ import javax.ws.rs.core.MediaType;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.utils.URIUtils;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 // The Java class will be hosted at the URI path "/hack"
 @Path("/search")
 public class MyResource {
+
+	final static int maxResults = 10;
 
 	@GET
 	@Produces("text/plain")
@@ -30,8 +40,17 @@ public class MyResource {
 	@GET
 	@Path("/confluence")
 	@Produces({MediaType.APPLICATION_JSON})
-	public String confluence(@QueryParam(value = "q") String query) throws IOException {
-		HttpGet httpGet = new HttpGet("http://confluence.dev.lithium.com/rest/prototype/1/search?max-results=10&query=" + query);
+	public String confluence(@QueryParam(value = "q") String query) throws IOException, URISyntaxException {
+
+		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+		nvps.add(new BasicNameValuePair("query", query));
+		nvps.add(new BasicNameValuePair("max-results", Integer.valueOf(maxResults).toString()));
+
+		URI uri = URIUtils.createURI("http", "confluence.dev.lithium.com", -1, "/rest/prototype/1/search",
+				URLEncodedUtils.format(nvps, "UTF-8"), null);
+
+		HttpGet httpGet = new HttpGet(uri);
+
 		String responseBody = callRest(httpGet);
 		return responseBody;
 	}
@@ -69,10 +88,21 @@ public class MyResource {
 	@GET
 	@Path("/jira")
 	@Produces({MediaType.APPLICATION_JSON})
-	public String jira(@QueryParam(value = "q") String query) throws IOException {
-        HttpGet httpGet = new HttpGet("http://jira.dev.lithium.com/rest/api/2/search?jql=" + query);
-        String responseBody = callRest(httpGet);
-        return responseBody;
+	public String jira(@QueryParam(value = "q") String query) throws IOException, URISyntaxException {
+
+		String jql = "summary ~ " + query + " OR description ~ " + query + " OR comment ~ " + query;
+
+		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+		nvps.add(new BasicNameValuePair("jql", jql));
+		nvps.add(new BasicNameValuePair("maxResults", Integer.valueOf(maxResults).toString()));
+
+		URI uri = URIUtils.createURI("http", "jira.dev.lithium.com", -1, "/rest/api/2/search",
+				URLEncodedUtils.format(nvps, "UTF-8"), null);
+
+		HttpGet httpGet = new HttpGet(uri);
+
+		String responseBody = callRest(httpGet);
+		return responseBody;
 	}
 
 	@GET
