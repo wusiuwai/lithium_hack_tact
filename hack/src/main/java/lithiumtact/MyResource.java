@@ -69,10 +69,10 @@ public class MyResource {
 	@GET
 	@Path("/jira")
 	@Produces({MediaType.APPLICATION_JSON})
-	public String jira(@QueryParam(value = "q") String query) {
-		System.out.println(query);
-		// todo: search jira
-		return "{results:[],message:'jira'}";
+	public String jira(@QueryParam(value = "q") String query) throws IOException {
+        HttpGet httpGet = new HttpGet("http://jira.dev.lithium.com/rest/api/2/search?jql=" + query);
+        String responseBody = callRest(httpGet);
+        return responseBody;
 	}
 
 	@GET
