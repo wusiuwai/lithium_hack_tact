@@ -12,13 +12,11 @@
             <artifactId>jersey-grizzly2</artifactId>
             <version>${jersey-version}</version>
         </dependency>
-        <!-- uncomment this to get JSON support:
          <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-json</artifactId>
             <version>${jersey-version}</version>
         </dependency>
-        -->
         <!-- uncomment this to get Fastinfoset support:
          <dependency>
             <groupId>com.sun.jersey</groupId>
@@ -57,9 +55,14 @@
           <artifactId>httpclient</artifactId>
           <version>4.3</version>
        </dependency>
+       <dependency>
+          <groupId>org.json</groupId>
+          <artifactId>json</artifactId>
+          <version>20090211</version>
+       </dependency>
     </dependencies>
-    <build>
-        <plugins>
+   <build>
+   <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -87,7 +90,7 @@
         </plugins>
     </build>
     <properties>
-        <jersey-version>1.8</jersey-version>
+       <jersey-version>1.9</jersey-version>
     </properties>
     <repositories>
         <repository>
