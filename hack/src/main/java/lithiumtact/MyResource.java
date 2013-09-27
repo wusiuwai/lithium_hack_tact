@@ -13,6 +13,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -80,24 +81,24 @@ public class MyResource {
 		for (int i = 0; i < links.length(); i++) {
 			JSONObject link = links.getJSONObject(0);
 			if (link.has("type") && link.getString("type").equals("text/html")) {
-				result.url = link.getString("href");
+				result.url = StringEscapeUtils.escapeHtml(link.getString("href"));
 				break;
 			}
 		}
 
-		result.desc = json.getString("title");
+		result.desc = StringEscapeUtils.escapeHtml(json.getString("title"));
 		if (result.desc.length() > 300) {
 			result.desc = result.desc.substring(0, 300);
 		}
 		if (json.has("creator")) {
-			result.author = json.getJSONObject("creator").getString("name");
+			result.author = StringEscapeUtils.escapeHtml(json.getJSONObject("creator").getString("name"));
 		}
-		result.created = json.getJSONObject("createdDate").getString("date");
-		result.fileType = json.getString("type");
-		result.title = json.getString("title");
+		result.created = StringEscapeUtils.escapeHtml(json.getJSONObject("createdDate").getString("date"));
+		result.fileType = StringEscapeUtils.escapeHtml(json.getString("type"));
+		result.title = StringEscapeUtils.escapeHtml(json.getString("title"));
 		result.jiraType = null;
 		result.jiraGroup = null;
-		result.confluenceSpace = json.getJSONObject("space").getString("name");
+		result.confluenceSpace = StringEscapeUtils.escapeHtml(json.getJSONObject("space").getString("name"));
 
 		return result;
 	}
@@ -169,16 +170,16 @@ public class MyResource {
 
 		JSONObject fields = json.getJSONObject("fields");
 
-		result.desc = fields.getString("description");
+		result.desc = StringEscapeUtils.escapeHtml(fields.getString("description"));
 		if (result.desc.length() > 300) {
 			result.desc = result.desc.substring(0, 300);
 		}
-		result.author = fields.getJSONObject("reporter").getString("name");
-		result.created = fields.getString("created");
+		result.author = StringEscapeUtils.escapeHtml(fields.getJSONObject("reporter").getString("name"));
+		result.created = StringEscapeUtils.escapeHtml(fields.getString("created"));
 		result.fileType = null;
-		result.title = fields.getString("summary");
-		result.jiraType = fields.getJSONObject("issuetype").getString("name");
-		result.jiraGroup = fields.getJSONObject("project").getString("name");
+		result.title = StringEscapeUtils.escapeHtml(fields.getString("summary"));
+		result.jiraType = StringEscapeUtils.escapeHtml(fields.getJSONObject("issuetype").getString("name"));
+		result.jiraGroup = StringEscapeUtils.escapeHtml(fields.getJSONObject("project").getString("name"));
 		result.confluenceSpace = null;
 
 		return result;
@@ -222,15 +223,15 @@ public class MyResource {
 
 	public SearchResult buildResultFromLithosphere(JSONObject json) throws JSONException {
 		SearchResult result = new SearchResult();
-		result.url = json.getString("view_href");
-		result.desc = json.getJSONObject("body").getString("$");
+		result.url = StringEscapeUtils.escapeHtml(json.getString("view_href"));
+		result.desc = StringEscapeUtils.escapeHtml(json.getJSONObject("body").getString("$"));
 		if (result.desc.length() > 300) {
 			result.desc = result.desc.substring(0, 300);
 		}
-		result.author = json.getJSONObject("author").getJSONObject("login").getString("$");
-		result.created = json.getJSONObject("post_time").getString("$");
-		result.fileType = json.getString("type");
-		result.title = json.getJSONObject("subject").getString("$");
+		result.author = StringEscapeUtils.escapeHtml(json.getJSONObject("author").getJSONObject("login").getString("$"));
+		result.created = StringEscapeUtils.escapeHtml(json.getJSONObject("post_time").getString("$"));
+		result.fileType = StringEscapeUtils.escapeHtml(json.getString("type"));
+		result.title = StringEscapeUtils.escapeHtml(json.getJSONObject("subject").getString("$"));
 		result.jiraType = null;
 		result.jiraGroup = null;
 		result.confluenceSpace = null;
