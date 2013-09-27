@@ -242,7 +242,7 @@ public class MyResource {
 	private String getLithosphereSessionKey() throws URISyntaxException, IOException, JSONException {
 		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 		nvps.add(new BasicNameValuePair("user.login", "LiB"));
-		nvps.add(new BasicNameValuePair("user.password", "P+65eIF378HfvFk"));
+		nvps.add(new BasicNameValuePair("user.password", "xxx"));
 		nvps.add(new BasicNameValuePair("restapi.response_format", "json"));
 
 		URI uri = URIUtils.createURI("http", "lithosphere.lithium.com", -1, "/restapi/vc/authentication/sessions/login",
